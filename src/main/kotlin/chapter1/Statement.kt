@@ -6,7 +6,10 @@ import kotlin.math.floor
 import kotlin.math.max
 
 fun statement(invoice: Invoice, plays: Plays): String {
+    return renderPlainText(invoice, plays)
+}
 
+fun renderPlainText(invoice: Invoice, plays: Plays): String {
     fun playFor(perf: Performance): Play {
         return plays.play[perf.playId]!!
     }
