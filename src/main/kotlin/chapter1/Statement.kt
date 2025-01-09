@@ -57,9 +57,12 @@ fun statement(invoice: Invoice, plays: Plays): String {
     var result = "청구 내역 (고객명: ${invoice.customer})\n"
 
     for (perf in invoice.performances) {
-        volumeCredits = volumeCreditsFor(perf)
         result += "  ${playFor(perf).name}: $${usd(amountFor(perf))} (${perf.audience}석)\n"
         totalAmount += amountFor(perf)
+    }
+
+    for (perf in invoice.performances) {
+        volumeCredits += volumeCreditsFor(perf)
     }
 
     result += "총액: $${usd(totalAmount)}\n"
