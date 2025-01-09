@@ -53,7 +53,6 @@ fun statement(invoice: Invoice, plays: Plays): String {
     }
 
     var totalAmount = 0
-    var volumeCredits = 0
     var result = "청구 내역 (고객명: ${invoice.customer})\n"
 
     for (perf in invoice.performances) {
@@ -61,6 +60,7 @@ fun statement(invoice: Invoice, plays: Plays): String {
         totalAmount += amountFor(perf)
     }
 
+    var volumeCredits = 0
     for (perf in invoice.performances) {
         volumeCredits += volumeCreditsFor(perf)
     }
