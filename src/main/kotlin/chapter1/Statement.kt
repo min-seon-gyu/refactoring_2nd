@@ -11,10 +11,10 @@ fun statement(invoice: Invoice, plays: Plays): String {
         return plays.play[perf.playId]!!
     }
 
-    fun amountFor(play: Play, perf: Performance): Int {
+    fun amountFor(perf: Performance): Int {
         var result = 0
 
-        when (play.type) {
+        when (playFor(perf).type) {
             "tragedy" -> {
                 result = 40000
                 if (perf.audience > 30) {
@@ -30,7 +30,7 @@ fun statement(invoice: Invoice, plays: Plays): String {
                 result += 300 * perf.audience
             }
 
-            else -> throw IllegalArgumentException("알 수 없는 장르: ${play.type}")
+            else -> throw IllegalArgumentException("알 수 없는 장르: ${playFor(perf).type}")
         }
         return result
     }
@@ -41,7 +41,7 @@ fun statement(invoice: Invoice, plays: Plays): String {
     val format = NumberFormat.getCurrencyInstance(Locale.US)
 
     for(perf in invoice.performances) {
-        val thisAmount = amountFor(playFor(perf), perf)
+        val thisAmount = amountFor(perf)
 
         volumeCredits += max(perf.audience - 30, 0)
         if("comedy" == playFor(perf).type) volumeCredits += floor(perf.audience.toDouble() / 5).toInt()
