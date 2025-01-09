@@ -54,6 +54,7 @@ fun statement(invoice: Invoice, plays: Plays): String {
 
     fun totalVolumeCredits(): Int {
         var result = 0
+
         for (perf in invoice.performances) {
             result += volumeCreditsFor(perf)
         }
@@ -62,6 +63,7 @@ fun statement(invoice: Invoice, plays: Plays): String {
 
     fun totalAmount(): Int {
         var result = 0
+
         for (perf in invoice.performances) {
             result += amountFor(perf)
         }
