@@ -41,13 +41,11 @@ fun statement(invoice: Invoice, plays: Plays): String {
     val format = NumberFormat.getCurrencyInstance(Locale.US)
 
     for(perf in invoice.performances) {
-        val thisAmount = amountFor(perf)
-
         volumeCredits += max(perf.audience - 30, 0)
         if("comedy" == playFor(perf).type) volumeCredits += floor(perf.audience.toDouble() / 5).toInt()
 
-        result += "  ${playFor(perf).name}: $${format.format(thisAmount / 100.0)} (${perf.audience}석)\n"
-        totalAmount += thisAmount
+        result += "  ${playFor(perf).name}: $${format.format(amountFor(perf) / 100.0)} (${perf.audience}석)\n"
+        totalAmount += amountFor(perf)
     }
 
     result += "총액: $${format.format(totalAmount / 100.0)}\n"
