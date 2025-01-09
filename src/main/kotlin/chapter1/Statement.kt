@@ -32,7 +32,20 @@ fun statement(invoice: Invoice, plays: Plays): String {
 
             else -> throw IllegalArgumentException("알 수 없는 장르: ${playFor(perf).type}")
         }
+
         return result
+    }
+
+    fun volumeCreditsFor(perf: Performance): Int {
+        var volumeCredits = 0
+
+        volumeCredits += max(perf.audience - 30, 0)
+
+        if ("comedy" == playFor(perf).type) {
+            volumeCredits += floor(perf.audience.toDouble() / 5).toInt()
+        }
+
+        return volumeCredits
     }
 
     var totalAmount = 0
@@ -40,10 +53,8 @@ fun statement(invoice: Invoice, plays: Plays): String {
     var result = "청구 내역 (고객명: ${invoice.customer})\n"
     val format = NumberFormat.getCurrencyInstance(Locale.US)
 
-    for(perf in invoice.performances) {
-        volumeCredits += max(perf.audience - 30, 0)
-        if("comedy" == playFor(perf).type) volumeCredits += floor(perf.audience.toDouble() / 5).toInt()
-
+    for (perf in invoice.performances) {
+        volumeCredits = volumeCreditsFor(perf)
         result += "  ${playFor(perf).name}: $${format.format(amountFor(perf) / 100.0)} (${perf.audience}석)\n"
         totalAmount += amountFor(perf)
     }
