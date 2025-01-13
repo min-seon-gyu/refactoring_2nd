@@ -50,20 +50,14 @@ class StatementData(
     }
 
     fun totalVolumeCredits(): Int {
-        var result = 0
-
-        for (perf in invoice.performances) {
-            result += volumeCreditsFor(perf)
+        return invoice.performances.map { volumeCreditsFor(it) }.reduce {
+            total, volumeCredits -> total + volumeCredits
         }
-        return result
     }
 
     fun totalAmount(): Int {
-        var result = 0
-
-        for (perf in invoice.performances) {
-            result += amountFor(perf)
+        return invoice.performances.map { amountFor(it) }.reduce {
+                total, amount -> total + amount
         }
-        return result
     }
 }
