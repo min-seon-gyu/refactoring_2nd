@@ -1,87 +1,26 @@
 package chapter1
 
 import java.text.NumberFormat
-import java.util.*;
-import kotlin.math.floor
-import kotlin.math.max
+import java.util.*
 
 fun statement(invoice: Invoice, plays: Plays): String {
-    val statementData = StatementData(invoice)
-    return renderPlainText(statementData, plays)
+    val statementData = StatementData(invoice, plays)
+    return renderPlainText(statementData)
 }
 
-fun renderPlainText(statementData: StatementData, plays: Plays): String {
-    fun playFor(perf: Performance): Play {
-        return plays.play[perf.playId]!!
-    }
-
-    fun amountFor(perf: Performance): Int {
-        var result = 0
-
-        when (playFor(perf).type) {
-            "tragedy" -> {
-                result = 40000
-                if (perf.audience > 30) {
-                    result += 1000 * (perf.audience - 30)
-                }
-            }
-
-            "comedy" -> {
-                result = 30000
-                if (perf.audience > 20) {
-                    result += 10000 + 500 * (perf.audience - 20)
-                }
-                result += 300 * perf.audience
-            }
-
-            else -> throw IllegalArgumentException("알 수 없는 장르: ${playFor(perf).type}")
-        }
-
-        return result
-    }
-
-    fun volumeCreditsFor(perf: Performance): Int {
-        var result = 0
-
-        result += max(perf.audience - 30, 0)
-
-        if ("comedy" == playFor(perf).type) {
-            result += floor(perf.audience.toDouble() / 5).toInt()
-        }
-
-        return result
-    }
-
+fun renderPlainText(statementData: StatementData): String {
     fun usd(number: Int): String {
         return NumberFormat.getCurrencyInstance(Locale.US).format(number / 100.0)
-    }
-
-    fun totalVolumeCredits(): Int {
-        var result = 0
-
-        for (perf in statementData.invoice.performances) {
-            result += volumeCreditsFor(perf)
-        }
-        return result
-    }
-
-    fun totalAmount(): Int {
-        var result = 0
-
-        for (perf in statementData.invoice.performances) {
-            result += amountFor(perf)
-        }
-        return result
     }
 
     var result = "청구 내역 (고객명: ${statementData.invoice.customer})\n"
 
     for (perf in statementData.invoice.performances) {
-        result += "  ${playFor(perf).name}: $${usd(amountFor(perf))} (${perf.audience}석)\n"
+        result += "  ${statementData.playFor(perf).name}: $${usd(statementData.amountFor(perf))} (${perf.audience}석)\n"
     }
 
-    result += "총액: $${usd(totalAmount())}\n"
-    result += "적립 포인트: ${totalVolumeCredits()} 점\n"
+    result += "총액: $${usd(statementData.totalAmount())}\n"
+    result += "적립 포인트: ${statementData.totalVolumeCredits()} 점\n"
 
     return result
 }
