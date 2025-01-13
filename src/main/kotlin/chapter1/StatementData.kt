@@ -1,5 +1,5 @@
 package chapter1
 
 class StatementData(
-    var customer: String
+    var invoice: Invoice
 )

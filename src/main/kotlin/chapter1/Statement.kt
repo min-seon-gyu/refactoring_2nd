@@ -6,11 +6,11 @@ import kotlin.math.floor
 import kotlin.math.max
 
 fun statement(invoice: Invoice, plays: Plays): String {
-    val statementData = StatementData()
-    return renderPlainText(statementData, invoice, plays)
+    val statementData = StatementData(invoice)
+    return renderPlainText(statementData, plays)
 }
 
-fun renderPlainText(statementData: StatementData, invoice: Invoice, plays: Plays): String {
+fun renderPlainText(statementData: StatementData, plays: Plays): String {
     fun playFor(perf: Performance): Play {
         return plays.play[perf.playId]!!
     }
@@ -59,7 +59,7 @@ fun renderPlainText(statementData: StatementData, invoice: Invoice, plays: Plays
     fun totalVolumeCredits(): Int {
         var result = 0
 
-        for (perf in invoice.performances) {
+        for (perf in statementData.invoice.performances) {
             result += volumeCreditsFor(perf)
         }
         return result
@@ -68,15 +68,15 @@ fun renderPlainText(statementData: StatementData, invoice: Invoice, plays: Plays
     fun totalAmount(): Int {
         var result = 0
 
-        for (perf in invoice.performances) {
+        for (perf in statementData.invoice.performances) {
             result += amountFor(perf)
         }
         return result
     }
 
-    var result = "청구 내역 (고객명: ${invoice.customer})\n"
+    var result = "청구 내역 (고객명: ${statementData.invoice.customer})\n"
 
-    for (perf in invoice.performances) {
+    for (perf in statementData.invoice.performances) {
         result += "  ${playFor(perf).name}: $${usd(amountFor(perf))} (${perf.audience}석)\n"
     }
 
