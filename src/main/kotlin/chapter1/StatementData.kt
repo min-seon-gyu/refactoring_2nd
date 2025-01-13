@@ -13,28 +13,7 @@ class StatementData(
     }
 
     fun amountFor(perf: Performance): Int {
-        var result = 0
-
-        when (playFor(perf).type) {
-            "tragedy" -> {
-                result = 40000
-                if (perf.audience > 30) {
-                    result += 1000 * (perf.audience - 30)
-                }
-            }
-
-            "comedy" -> {
-                result = 30000
-                if (perf.audience > 20) {
-                    result += 10000 + 500 * (perf.audience - 20)
-                }
-                result += 300 * perf.audience
-            }
-
-            else -> throw IllegalArgumentException("알 수 없는 장르: ${playFor(perf).type}")
-        }
-
-        return result
+        return PerformanceCalculator(perf, playFor(perf)).amount()
     }
 
     fun volumeCreditsFor(perf: Performance): Int {
