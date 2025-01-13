@@ -21,25 +21,7 @@ open class PerformanceCalculator(
     }
 
     open fun amount(): Int {
-        var result = 0
-
-        when (play.type) {
-            // 비극
-            "tragedy" -> throw IllegalArgumentException("오류 발생")
-
-            // 희극
-            "comedy" -> {
-                result = 30000
-                if (performance.audience > 20) {
-                    result += 10000 + 500 * (performance.audience - 20)
-                }
-                result += 300 * performance.audience
-            }
-
-            else -> throw IllegalArgumentException("알 수 없는 장르: ${play.type}")
-        }
-
-        return result
+        throw RuntimeException("서브클래스에서 처리하도록 설계되었습니다.")
     }
 
     open fun volumeCredits(): Int {
@@ -72,4 +54,17 @@ class TragedyCalculator(
 
 class ComedyCalculator(
     perf: Performance, play: Play
-): PerformanceCalculator(perf, play)
+): PerformanceCalculator(perf, play) {
+
+    override fun amount(): Int {
+        var result = 30000
+
+        if (performance.audience > 20) {
+            result += 10000 + 500 * (performance.audience - 20)
+        }
+
+        result += 300 * performance.audience
+
+        return result
+    }
+}
