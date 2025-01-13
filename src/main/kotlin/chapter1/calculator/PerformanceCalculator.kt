@@ -25,15 +25,7 @@ open class PerformanceCalculator(
     }
 
     open fun volumeCredits(): Int {
-        var result = 0
-
-        result += max(performance.audience - 30, 0)
-
-        if ("comedy" == play.type) {
-            result += floor(performance.audience.toDouble() / 5).toInt()
-        }
-
-        return result
+        return max(performance.audience - 30, 0)
     }
 }
 
@@ -66,5 +58,9 @@ class ComedyCalculator(
         result += 300 * performance.audience
 
         return result
+    }
+
+    override fun volumeCredits(): Int {
+        return super.volumeCredits() + floor(performance.audience / 5.0).toInt()
     }
 }
