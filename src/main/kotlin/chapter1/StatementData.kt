@@ -17,15 +17,7 @@ class StatementData(
     }
 
     fun volumeCreditsFor(perf: Performance): Int {
-        var result = 0
-
-        result += max(perf.audience - 30, 0)
-
-        if ("comedy" == playFor(perf).type) {
-            result += floor(perf.audience.toDouble() / 5).toInt()
-        }
-
-        return result
+        return PerformanceCalculator(perf, playFor(perf)).volumeCredits()
     }
 
     fun totalVolumeCredits(): Int {

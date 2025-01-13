@@ -1,5 +1,8 @@
 package chapter1
 
+import kotlin.math.floor
+import kotlin.math.max
+
 class PerformanceCalculator(
     var performance: Performance,
     var play: Play
@@ -27,6 +30,18 @@ class PerformanceCalculator(
             }
 
             else -> throw IllegalArgumentException("알 수 없는 장르: ${play.type}")
+        }
+
+        return result
+    }
+
+    fun volumeCredits(): Int {
+        var result = 0
+
+        result += max(performance.audience - 30, 0)
+
+        if ("comedy" == play.type) {
+            result += floor(performance.audience.toDouble() / 5).toInt()
         }
 
         return result
