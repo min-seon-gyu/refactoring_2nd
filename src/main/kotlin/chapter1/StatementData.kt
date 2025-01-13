@@ -1,7 +1,6 @@
 package chapter1
 
-import kotlin.math.floor
-import kotlin.math.max
+import chapter1.calculator.PerformanceCalculator
 
 class StatementData(
     var invoice: Invoice,

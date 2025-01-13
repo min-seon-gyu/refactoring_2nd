@@ -1,12 +1,24 @@
-package chapter1
+package chapter1.calculator
 
+import chapter1.Performance
+import chapter1.Play
 import kotlin.math.floor
 import kotlin.math.max
 
-class PerformanceCalculator(
+open class PerformanceCalculator(
     var performance: Performance,
     var play: Play
 ) {
+
+    companion object {
+        fun createPerformanceCalculator(perf: Performance, play: Play): PerformanceCalculator {
+            return when (play.type) {
+                "tragedy" -> TragedyCalculator(perf, play)
+                "comedy"-> ComedyCalculator(perf, play)
+                else -> throw IllegalArgumentException("알 수 없는 장르: ${play.type}")
+            }
+        }
+    }
 
     fun amount(): Int {
         var result = 0
@@ -46,4 +58,12 @@ class PerformanceCalculator(
 
         return result
     }
+}
+
+class TragedyCalculator(perf: Performance, play: Play): PerformanceCalculator(perf, play) {
+
+}
+
+class ComedyCalculator(perf: Performance, play: Play): PerformanceCalculator(perf, play) {
+
 }
