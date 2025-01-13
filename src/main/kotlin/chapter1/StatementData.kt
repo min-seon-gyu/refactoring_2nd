@@ -1,6 +1,6 @@
 package chapter1
 
-import chapter1.calculator.PerformanceCalculator
+import chapter1.calculator.PerformanceCalculator.Companion.createPerformanceCalculator
 
 class StatementData(
     var invoice: Invoice,
@@ -12,11 +12,11 @@ class StatementData(
     }
 
     fun amountFor(perf: Performance): Int {
-        return PerformanceCalculator(perf, playFor(perf)).amount()
+        return createPerformanceCalculator(perf, playFor(perf)).amount()
     }
 
     fun volumeCreditsFor(perf: Performance): Int {
-        return PerformanceCalculator(perf, playFor(perf)).volumeCredits()
+        return createPerformanceCalculator(perf, playFor(perf)).volumeCredits()
     }
 
     fun totalVolumeCredits(): Int {
